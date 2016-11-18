@@ -1,7 +1,7 @@
 package de.js.cb;
 
 import de.js.cb.exc.CircuitBreakerException;
-import de.js.cb.exc.FailureThresholdExceeded;
+import de.js.cb.exc.CircuitBreakerThresholdExceeded;
 import de.js.cb.req.CircuitBreaker;
 import de.js.cb.req.Request;
 import org.junit.Before;
@@ -35,7 +35,7 @@ public class MainTest {
         try {
             circuitBreaker.run(Response.class);
         } catch (CircuitBreakerException e) {
-            assertTrue(e instanceof FailureThresholdExceeded);
+            assertTrue(e instanceof CircuitBreakerThresholdExceeded);
             assertFalse(circuitBreaker.isOpen());
             assertFalse(circuitBreaker.isHalfOpen());
         }
@@ -52,14 +52,14 @@ public class MainTest {
         assertFalse(circuitBreaker.isOpen());
     }
 
-    @Test(expected = FailureThresholdExceeded.class)
+    @Test(expected = CircuitBreakerThresholdExceeded.class)
     public void circuitBreakerClosed() throws Exception {
         CircuitBreaker circuitBreaker = getRequestCircuitBreaker();
         circuitBreaker.close();
         circuitBreaker.run(Response.class);
     }
 
-    @Test(expected = FailureThresholdExceeded.class)
+    @Test(expected = CircuitBreakerThresholdExceeded.class)
     public void reuseCircuitBreakerAndSimulateFailure() throws Exception {
         CircuitBreaker circuitBreaker = getRequestCircuitBreaker();
         Response response = circuitBreaker.run(Response.class);

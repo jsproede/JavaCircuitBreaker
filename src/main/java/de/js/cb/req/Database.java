@@ -1,6 +1,6 @@
 package de.js.cb.req;
 
-import de.js.cb.exc.FailureException;
+import de.js.cb.exc.CircuitBreakerFailureException;
 
 public class Database extends Callable {
 
@@ -10,7 +10,7 @@ public class Database extends Callable {
     }
 
     @Override
-    protected <T> T call(Class<T> returnType) throws FailureException {
+    protected <T> T call(Class<T> returnType) throws CircuitBreakerFailureException {
         return null;
     }
 }

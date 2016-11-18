@@ -1,8 +1,8 @@
 package de.js.cb.req;
 
 import de.js.cb.exc.CircuitBreakerException;
-import de.js.cb.exc.FailureException;
-import de.js.cb.exc.FailureThresholdExceeded;
+import de.js.cb.exc.CircuitBreakerFailureException;
+import de.js.cb.exc.CircuitBreakerThresholdExceeded;
 
 public class CircuitBreaker {
 
@@ -36,14 +36,14 @@ public class CircuitBreaker {
                 open();
                 monitor.logCurrentState();
                 return o;
-            } catch (FailureException e) {
+            } catch (CircuitBreakerFailureException e) {
                 retries++;
             }
         }
 
         close();
         monitor.logCurrentState();
-        throw new FailureThresholdExceeded();
+        throw new CircuitBreakerThresholdExceeded();
     }
 
     private void open() {

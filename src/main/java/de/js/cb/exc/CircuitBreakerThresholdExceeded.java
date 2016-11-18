@@ -1,8 +1,8 @@
 package de.js.cb.exc;
 
-public class FailureThresholdExceeded extends CircuitBreakerException {
+public class CircuitBreakerThresholdExceeded extends CircuitBreakerException {
 
-    public FailureThresholdExceeded() {
+    public CircuitBreakerThresholdExceeded() {
         super();
     }
 }
