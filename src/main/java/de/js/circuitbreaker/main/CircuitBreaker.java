@@ -33,7 +33,7 @@ public class CircuitBreaker {
     public <T> T run(Class<T> returnType) throws CircuitBreakerException {
         callable.prepare();
 
-        while ((state == State.HALF_OPEN || state == State.OPEN) && retries < failureThreshold) {
+        while (state == State.OPEN || (state == State.HALF_OPEN && retries < failureThreshold)) {
             try {
                 T o = callable.call(returnType);
                 open();
