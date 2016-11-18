@@ -41,9 +41,18 @@ public class CircuitBreaker {
             }
         }
 
+        monitor.logFailure();
         close();
         monitor.logCurrentState();
         throw new CircuitBreakerThresholdExceeded();
+    }
+
+    int getRetries() {
+        return retries;
+    }
+
+    int getFailureThreshold() {
+        return failureThreshold;
     }
 
     private void open() {
@@ -73,6 +82,6 @@ public class CircuitBreaker {
 
     public void simulateFailure() {
         halfOpen();
-        retries = failureThreshold + 1;
+        retries = failureThreshold;
     }
 }

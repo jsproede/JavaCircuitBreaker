@@ -19,6 +19,11 @@ class CircuitMonitor {
         }
     }
 
+    void logFailure() {
+        if (circuitBreaker == null) return;
+        log("Failure threshold exceeded! Did " + circuitBreaker.getRetries() + " retries.");
+    }
+
     private void log(String s) {
         System.out.println(circuitBreaker + " " + s);
     }

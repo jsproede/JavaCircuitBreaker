@@ -49,8 +49,15 @@ public class MainTest {
         assertFalse(circuitBreaker.isHalfOpen());
     }
 
-    @Test
+    @Test(expected = CircuitBreakerThresholdExceeded.class)
     public void circuitBreakerWithFailure() throws Exception {
+        CircuitBreaker circuitBreaker = getCircuitBreaker();
+        circuitBreaker.simulateFailure();
+        circuitBreaker.run(responseType);
+    }
+
+    @Test
+    public void circuitBreakerWithFailureAndRetryAfterwards() throws Exception {
         CircuitBreaker circuitBreaker = getCircuitBreaker();
         circuitBreaker.simulateFailure();
 
