@@ -1,7 +1,7 @@
 package de.js.cb;
 
 import de.js.cb.exc.CircuitBreakerException;
-import de.js.cb.exc.FailureThresholdExeeceded;
+import de.js.cb.exc.FailureThresholdExceeded;
 import de.js.cb.req.*;
 
 public class Main {
@@ -15,7 +15,7 @@ public class Main {
 
         try {
             Response response = circuitBreaker.run(Response.class);
-        } catch (FailureThresholdExeeceded e) {
+        } catch (FailureThresholdExceeded e) {
             System.out.println("Threshold exceeded");
         } catch (CircuitBreakerException e) {
             e.printStackTrace();

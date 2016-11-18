@@ -11,11 +11,15 @@ class CircuitMonitor {
     void logCurrentState() {
         if (circuitBreaker == null) return;
         if (circuitBreaker.isOpen()) {
-            System.out.println("CircuitBreaker is open");
+            log("is open");
         } else if (circuitBreaker.isHalfOpen()) {
-            System.out.println("CircuitBreaker didn't send any requests since instantiation");
+            log("didn't send any requests since instantiation");
         } else {
-            System.out.println("CircuitBreaker is closed");
+            log("is closed");
         }
+    }
+
+    private void log(String s) {
+        System.out.println(circuitBreaker + " " + s);
     }
 }

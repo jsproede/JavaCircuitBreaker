@@ -1,10 +1,8 @@
 package de.js.cb;
 
-import de.js.cb.req.Callable;
-import de.js.cb.req.CallableFactory;
-import de.js.cb.req.CircuitBreaker;
 import de.js.cb.exc.CircuitBreakerException;
-import de.js.cb.exc.FailureThresholdExeeceded;
+import de.js.cb.exc.FailureThresholdExceeded;
+import de.js.cb.req.CircuitBreaker;
 import de.js.cb.req.Request;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,8 +22,7 @@ public class MainTest {
     public void circuitBreakerTest() throws Exception {
         CircuitBreaker circuitBreaker = getRequestCircuitBreaker();
         Response response = circuitBreaker.run(Response.class);
-        assertNotNull(response);
-        assertEquals(200, response.getStatusCode());
+        check(response);
         assertTrue(circuitBreaker.isOpen());
         assertFalse(circuitBreaker.isHalfOpen());
     }
@@ -38,10 +35,14 @@ public class MainTest {
         try {
             circuitBreaker.run(Response.class);
         } catch (CircuitBreakerException e) {
-            assertTrue(e instanceof FailureThresholdExeeceded);
+            assertTrue(e instanceof FailureThresholdExceeded);
             assertFalse(circuitBreaker.isOpen());
             assertFalse(circuitBreaker.isHalfOpen());
         }
+
+        circuitBreaker.halfOpen();
+        Response response = circuitBreaker.run(Response.class);
+        check(response);
     }
 
     @Test
@@ -51,26 +52,29 @@ public class MainTest {
         assertFalse(circuitBreaker.isOpen());
     }
 
-    @Test(expected = FailureThresholdExeeceded.class)
+    @Test(expected = FailureThresholdExceeded.class)
     public void circuitBreakerClosed() throws Exception {
         CircuitBreaker circuitBreaker = getRequestCircuitBreaker();
         circuitBreaker.close();
         circuitBreaker.run(Response.class);
     }
 
-    @Test(expected = FailureThresholdExeeceded.class)
+    @Test(expected = FailureThresholdExceeded.class)
     public void reuseCircuitBreakerAndSimulateFailure() throws Exception {
         CircuitBreaker circuitBreaker = getRequestCircuitBreaker();
         Response response = circuitBreaker.run(Response.class);
-        assertNotNull(response);
-        assertEquals(200, response.getStatusCode());
+        check(response);
 
         response = circuitBreaker.run(Response.class);
-        assertNotNull(response);
-        assertEquals(200, response.getStatusCode());
+        check(response);
 
         circuitBreaker.simulateFailure();
         circuitBreaker.run(Response.class);
+    }
+
+    private void check(Response response) {
+        assertNotNull(response);
+        assertEquals(200, response.getStatusCode());
     }
 
     private CircuitBreaker getRequestCircuitBreaker() {

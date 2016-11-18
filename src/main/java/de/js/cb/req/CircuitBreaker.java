@@ -2,7 +2,7 @@ package de.js.cb.req;
 
 import de.js.cb.exc.CircuitBreakerException;
 import de.js.cb.exc.FailureException;
-import de.js.cb.exc.FailureThresholdExeeceded;
+import de.js.cb.exc.FailureThresholdExceeded;
 
 public class CircuitBreaker {
 
@@ -43,7 +43,7 @@ public class CircuitBreaker {
 
         close();
         monitor.logCurrentState();
-        throw new FailureThresholdExeeceded();
+        throw new FailureThresholdExceeded();
     }
 
     private void open() {
