@@ -11,6 +11,10 @@ public class Database extends Callable {
 
     @Override
     protected <T> T call(Class<T> returnType) throws CircuitBreakerFailureException {
-        return null;
+        try {
+            return returnType.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new CircuitBreakerFailureException();
+        }
     }
 }
