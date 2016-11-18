@@ -8,8 +8,7 @@ public class CircuitBreaker {
 
     private Callable callable;
 
-    private boolean open;
-    private boolean halfOpen;
+    private State state = State.HALF_OPEN;
 
     private int failureThreshold;
     private int retries;
@@ -30,7 +29,7 @@ public class CircuitBreaker {
     public <T> T run(Class<T> returnType) throws CircuitBreakerException {
         callable.prepare();
 
-        while (open || ((halfOpen && !open) && retries < failureThreshold)) {
+        while ((state == State.HALF_OPEN || state == State.OPEN) && retries < failureThreshold) {
             try {
                 T o = callable.call(returnType);
                 open();
@@ -52,32 +51,35 @@ public class CircuitBreaker {
     }
 
     private void open() {
-        this.open = true;
-        this.halfOpen = false;
+        this.state = State.OPEN;
     }
 
     public void halfOpen() {
-        this.open = false;
-        this.halfOpen = true;
+        this.state = State.HALF_OPEN;
         this.retries = 0;
     }
 
     public void close() {
-        this.open = false;
-        this.halfOpen = false;
+        this.state = State.CLOSED;
         this.retries = 0;
     }
 
     public boolean isOpen() {
-        return this.open;
+        return this.state == State.OPEN;
     }
 
     public boolean isHalfOpen() {
-        return this.halfOpen;
+        return this.state == State.HALF_OPEN;
     }
 
     public void simulateFailure() {
         halfOpen();
         retries = failureThreshold;
     }
+}
+
+enum State {
+    OPEN,
+    CLOSED,
+    HALF_OPEN
 }
