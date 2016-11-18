@@ -6,6 +6,10 @@ import de.js.circuitbreaker.exceptions.CircuitBreakerThresholdExceeded;
 
 public class CircuitBreaker {
 
+    private enum State {
+        OPEN, CLOSED, HALF_OPEN
+    }
+
     private Callable callable;
 
     private State state = State.HALF_OPEN;
@@ -76,10 +80,4 @@ public class CircuitBreaker {
         halfOpen();
         retries = failureThreshold;
     }
-}
-
-enum State {
-    OPEN,
-    CLOSED,
-    HALF_OPEN
 }
