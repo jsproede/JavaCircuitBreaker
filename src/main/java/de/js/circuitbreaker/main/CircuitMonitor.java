@@ -1,4 +1,4 @@
-package de.js.cb.req;
+package de.js.circuitbreaker.main;
 
 class CircuitMonitor {
 

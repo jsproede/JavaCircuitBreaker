@@ -1,10 +1,9 @@
-package de.js.cb.req;
+package de.js.circuitbreaker.callables;
 
-import de.js.cb.exc.CircuitBreakerFailureException;
+import de.js.circuitbreaker.exceptions.CircuitBreakerFailureException;
+import de.js.circuitbreaker.main.Callable;
 
-public class Request extends Callable {
-
-    Request() {}
+public class Database extends Callable {
 
     @Override
     protected void prepare() {
@@ -13,12 +12,11 @@ public class Request extends Callable {
 
     @Override
     protected <T> T call(Class<T> returnType) throws CircuitBreakerFailureException {
-        T o;
         try {
-            o = returnType.newInstance();
+            // TODO: Connect to a database or something like that
+            return returnType.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
             throw new CircuitBreakerFailureException();
         }
-        return o;
     }
 }

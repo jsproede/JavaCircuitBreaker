@@ -1,8 +1,9 @@
-package de.js.cb.req;
+package de.js.circuitbreaker.callables;
 
-import de.js.cb.exc.CircuitBreakerFailureException;
+import de.js.circuitbreaker.exceptions.CircuitBreakerFailureException;
+import de.js.circuitbreaker.main.Callable;
 
-public class Database extends Callable {
+public class Request extends Callable {
 
     @Override
     protected void prepare() {
@@ -11,10 +12,12 @@ public class Database extends Callable {
 
     @Override
     protected <T> T call(Class<T> returnType) throws CircuitBreakerFailureException {
+        T o;
         try {
-            return returnType.newInstance();
+            o = returnType.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
             throw new CircuitBreakerFailureException();
         }
+        return o;
     }
 }

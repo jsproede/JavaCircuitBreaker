@@ -1,8 +1,8 @@
-package de.js.cb.req;
+package de.js.circuitbreaker.main;
 
-import de.js.cb.exc.CircuitBreakerException;
-import de.js.cb.exc.CircuitBreakerFailureException;
-import de.js.cb.exc.CircuitBreakerThresholdExceeded;
+import de.js.circuitbreaker.exceptions.CircuitBreakerException;
+import de.js.circuitbreaker.exceptions.CircuitBreakerFailureException;
+import de.js.circuitbreaker.exceptions.CircuitBreakerThresholdExceeded;
 
 public class CircuitBreaker {
 
@@ -30,7 +30,7 @@ public class CircuitBreaker {
     public <T> T run(Class<T> returnType) throws CircuitBreakerException {
         callable.prepare();
 
-        while(open || ((halfOpen && !open) && retries < failureThreshold)) {
+        while (open || ((halfOpen && !open) && retries < failureThreshold)) {
             try {
                 T o = callable.call(returnType);
                 open();
@@ -49,10 +49,6 @@ public class CircuitBreaker {
 
     int getRetries() {
         return retries;
-    }
-
-    int getFailureThreshold() {
-        return failureThreshold;
     }
 
     private void open() {

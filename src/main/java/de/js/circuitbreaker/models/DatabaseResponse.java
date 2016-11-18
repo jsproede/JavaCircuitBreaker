@@ -1,6 +1,4 @@
-package de.js.cb.exc;
-
-import de.js.cb.Response;
+package de.js.circuitbreaker.models;
 
 public class DatabaseResponse extends Response {
 

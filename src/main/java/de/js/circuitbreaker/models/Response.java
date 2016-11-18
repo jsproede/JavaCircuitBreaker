@@ -1,4 +1,4 @@
-package de.js.cb;
+package de.js.circuitbreaker.models;
 
 public class Response {
 

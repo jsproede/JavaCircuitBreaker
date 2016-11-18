@@ -1,8 +1,11 @@
-package de.js.cb;
+package de.js.circuitbreaker;
 
-import de.js.cb.exc.CircuitBreakerException;
-import de.js.cb.exc.CircuitBreakerThresholdExceeded;
-import de.js.cb.req.*;
+import de.js.circuitbreaker.callables.Request;
+import de.js.circuitbreaker.exceptions.CircuitBreakerException;
+import de.js.circuitbreaker.exceptions.CircuitBreakerThresholdExceeded;
+import de.js.circuitbreaker.main.Callable;
+import de.js.circuitbreaker.main.CircuitBreaker;
+import de.js.circuitbreaker.models.Response;
 
 public class Main {
 
@@ -24,7 +27,7 @@ public class Main {
 
     CircuitBreaker getCircuitBreaker(Class<? extends Callable> clazz) {
         try {
-            Callable c = CallableFactory.instance(clazz);
+            Callable c = Callable.newInstance(clazz);
             CircuitBreaker circuitBreaker = new CircuitBreaker(c);
             return circuitBreaker.withFailureThreshold(5);
         } catch (IllegalAccessException | InstantiationException e) {

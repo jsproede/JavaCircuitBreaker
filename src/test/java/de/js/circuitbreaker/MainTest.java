@@ -1,12 +1,13 @@
-package de.js.cb;
+package de.js.circuitbreaker;
 
-import de.js.cb.exc.CircuitBreakerException;
-import de.js.cb.exc.CircuitBreakerThresholdExceeded;
-import de.js.cb.exc.DatabaseResponse;
-import de.js.cb.req.Callable;
-import de.js.cb.req.CircuitBreaker;
-import de.js.cb.req.Database;
-import de.js.cb.req.Request;
+import de.js.circuitbreaker.callables.Database;
+import de.js.circuitbreaker.callables.Request;
+import de.js.circuitbreaker.exceptions.CircuitBreakerException;
+import de.js.circuitbreaker.exceptions.CircuitBreakerThresholdExceeded;
+import de.js.circuitbreaker.main.Callable;
+import de.js.circuitbreaker.main.CircuitBreaker;
+import de.js.circuitbreaker.models.DatabaseResponse;
+import de.js.circuitbreaker.models.Response;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
